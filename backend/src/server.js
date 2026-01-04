@@ -21,8 +21,10 @@ app.use(rateLimiter)
 
 app.use("/api/notes", notesRoutes);
 
-connectDB();
-
-app.listen(PORT, () => {
-  console.log("Server started on PORT:", PORT);
+// connectDB(); // better to guarantee connect db first before listening
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log("Server started on PORT:", PORT);
+  });
 });
+
