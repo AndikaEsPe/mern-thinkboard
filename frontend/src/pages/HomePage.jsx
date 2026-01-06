@@ -3,7 +3,8 @@ import Navbar from '../components/Navbar'
 import RateLimitedUI from '../components/RateLimitedUI';
 import NoteCard from '../components/NoteCard';
 
-import axios from 'axios';
+// import axios from 'axios';
+import api from '../lib/axios';
 import toast from 'react-hot-toast';
 
 const HomePage = () => {
@@ -16,8 +17,9 @@ const HomePage = () => {
         try {
             // const res = await fetch("http://localhost:5001/api/notes");
             // const data = await res.json();
-            const res = await axios.get("http://localhost:5001/api/notes");
-
+            // const res = await axios.get("http://localhost:5001/api/notes");
+            const res = await api.get("/notes"); // reduce redundancy in typing path
+            
             console.log(res.data);
             setNotes(res.data);
             setIsRateLimited(false);
