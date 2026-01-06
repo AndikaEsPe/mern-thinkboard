@@ -1,8 +1,10 @@
 // const express = require("express"); // commonjs
 import express from "express"; // need to add type module in package.json
+import dotenv from "dotenv";
+import cors from "cors";
+
 import notesRoutes from "./routes/notesRoutes.js";
 import {connectDB} from "./config/db.js";
-import dotenv from "dotenv";
 import rateLimiter from "./middleware/rateLimiter.js";
 
 dotenv.config();
@@ -12,7 +14,16 @@ const PORT = process.env.PORT || 5001;
 
 // middleware: function that runs between request and response
 app.use(express.json()); // to parse JSON bodies: req.body; must be before routes
-app.use(rateLimiter)
+
+// app.use(cors()); // allow every requests from every single url
+// this should be before ratelimiter
+app.use(cors({
+  origin: "http://localhost:5173"
+})); // originally this is not allowed e.g. we are coming from frontend localhost:3000 then send a request to API backend at http://api.example.com
+
+app.use(rateLimiter);
+
+
 // example of simple custom middleware
 // app.use((req, res, next) => {
 //   console.log(`Req method is ${req.method} & Req URL is ${req.url}`);
